@@ -390,7 +390,6 @@ var lt_b2 = applyLandTrendr(B2, 1);
 var lt_b3 = applyLandTrendr(B3, 1);
 var lt_b4 = applyLandTrendr(B4, 1);
 var lt_b5 = applyLandTrendr(B5, 1);
-var lt_b6 = applyLandTrendr(B6, 1);
 var lt_b7 = applyLandTrendr(B7, 1);
 
 //----- PLOT THE SOURCE AND FITTED TIME SERIES FOR THE GIVEN POINT -----
