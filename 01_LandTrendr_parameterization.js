@@ -7,7 +7,7 @@
 // Description: parameterization and visualization of LandTrendr using
 //              different spectral indecies and bandas
 
-// date: 2018-11
+// date: 2018-11-05
 // author: Javier Lopatin | javier.lopatin@kit.edu; javierlopatin@gmail.com
 // Based on the information posted in: https://github.com/eMapR/LT-GEE
 
@@ -19,8 +19,6 @@
 
 // show LandTrend for this point
 var aoi = ee.FeatureCollection(geometry);
-
-var ltgee = require('users/emaprlab/public:Modules/LandTrendr.js');
 
 // define years and dates to include in landsat image collection
 var startYear = 1987;    // what year do you want to start the time series
@@ -41,7 +39,7 @@ var NDVI = function(img) {
                    .set('system:time_start', img.get('system:time_start')); // ...set the output system:time_start metadata to the input image time_start otherwise it is null
     return index ;
 };
-// calculate EVI ( 2.5 * ((Band 4 – Band 3) / (Band 4 + 6 * Band 3 – 7.5 * Band 1 + 1)) )
+// calculate EVI ( 2.5 * ((B4 – B3)/(B4 + 6 * B3 – 7.5 * B1 + 1)) )
 var EVI = function(img) {
     var index = img.expression(
       '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
@@ -166,13 +164,6 @@ var B5 = function(img){
                   .set('system:time_start', img.get('system:time_start'));
   return index;
 };
-var B6 = function(img){
-  var index = img.select('B6')
-                  .multiply(1000)
-                  .select([0], ['B6'])
-                  .set('system:time_start', img.get('system:time_start'));
-  return index;
-};
 var B7 = function(img){
   var index = img.select('B7')
                   .multiply(1000)
@@ -277,14 +268,11 @@ var getCombinedSRcollection = function(year, startDay, endDay, aoi) {
 
 // make a medoid composite with equal weight among indices
 var medoidMosaic = function(inCollection, dummyCollection) {
-
   // fill in missing years with the dummy collection
   var imageCount = inCollection.toList(1).length();                                                            // get the number of images
   var finalCollection = ee.ImageCollection(ee.Algorithms.If(imageCount.gt(0), inCollection, dummyCollection)); // if the number of images in this year is 0, then use the dummy collection, otherwise use the SR collection
-
   // calculate median across images in collection per band
   var median = finalCollection.median();                                                                       // calculate the median of the annual image collection - returns a single 6 band image - the collection median per band
-
   // calculate the different between the median and the observation per image per band
   var difFromMedian = finalCollection.map(function(img) {
     var diff = ee.Image(img).subtract(median).pow(ee.Image.constant(2));                                       // get the difference between each image/band and the corresponding band median and take to power of 2 to make negatives positive and make greater differences weight more
@@ -331,10 +319,11 @@ var getPoint = function(img, geom, z) {
 
 
 // ----- FUNCTION TO CHART THE SOURCE AND FITTED TIME SERIES FOR A POINT -----
-var chartPoint = function(lt, pt, distDir, title) {
-  Map.centerObject(pt, 14);
-  Map.addLayer(pt, {color: "FF0000"});
-  var point = getPoint(lt, pt, 10);
+var chartPoint = function(lt, aoi, distDir, title) {
+  // lt = landtrendr output; aoi = point of interest
+  Map.centerObject(aoi, 14);
+  Map.addLayer(aoi, {color: "FF0000"});
+  var point = getPoint(lt, aoi, 10);
   var data = [['x', 'y-original', 'y-fitted']];
   for (var i = 0; i <= (endYear-startYear); i++) {
     data = data.concat([[point.LandTrendr[0][i], point.LandTrendr[1][i]*distDir, point.LandTrendr[2][i]*distDir]]);
@@ -364,10 +353,9 @@ var	annualSRcollection = buildMosaicCollection(startYear, endYear, startDay, end
 // Function to produce LandTrebdr segmentations with different indices and bands
 var applyLandTrendr = function(VI, distDir){
 	// apply the function to calculate the segmentation index and adjust the values by the distDir parameter - flip index so that a vegetation loss is associated with a postive delta in spectral value
-  var ltCollection = annualSRcollection.map(VI)                                             // map the function over every image in the collection - returns a 1-band annual image collection of the spectral index
-                                                .map(function(img) {return img.multiply(distDir)           // ...multiply the segmentation index by the distDir to ensure that vegetation loss is associated with a positive spectral delta
-                                                .set('system:time_start', img.get('system:time_start'))}); // ...set the output system:time_start metadata to the input image time_start otherwise it is null
-
+  var ltCollection = annualSRcollection.map(VI)                                                   // map the function over every image in the collection - returns a 1-band annual image collection of the spectral index
+                                       .map(function(img) {return img.multiply(distDir)           // ...multiply the segmentation index by the distDir to ensure that vegetation loss is associated with a positive spectral delta
+                                       .set('system:time_start', img.get('system:time_start'))}); // ...set the output system:time_start metadata to the input image time_start otherwise it is null
 	//----- RUN LANDTRENDR -----
 	run_params.timeSeries = ltCollection; // add LT collection to the segmentation run parameter object
 	// run LandTrendr spectral temporal segmentation algorithm
@@ -398,26 +386,39 @@ var lt_wetness = applyLandTrendr(Wetness, 1);
 var lt_angle = applyLandTrendr(Angle, 1);
 // using bands
 var lt_b1 = applyLandTrendr(B1, 1);
-var lt_b2 = applyLandTrendr(B1, 2);
-var lt_b3 = applyLandTrendr(B1, 3);
-var lt_b4 = applyLandTrendr(B1, 4);
-var lt_b5 = applyLandTrendr(B1, 5);
-var lt_b6 = applyLandTrendr(B1, 6);
-var lt_b7 = applyLandTrendr(B1, 7);
+var lt_b2 = applyLandTrendr(B2, 1);
+var lt_b3 = applyLandTrendr(B3, 1);
+var lt_b4 = applyLandTrendr(B4, 1);
+var lt_b5 = applyLandTrendr(B5, 1);
+var lt_b6 = applyLandTrendr(B6, 1);
+var lt_b7 = applyLandTrendr(B7, 1);
 
 //----- PLOT THE SOURCE AND FITTED TIME SERIES FOR THE GIVEN POINT -----
 chartPoint(lt_ndvi, aoi, -1, 'NDVI'); // plot the x-y time series for the given point
-chartPoint(lt_evi, aoi, -1, 'EVI');
-chartPoint(lt_gndvi, aoi, -1, 'GNDI');
-chartPoint(lt_lswi, aoi, -1, 'LSWI');
-chartPoint(lt_brightness, aoi, 1, 'Brightness');
-chartPoint(lt_greenness, aoi, 1, 'Greenness');
-chartPoint(lt_wetness, aoi, 1, 'Wetness');
-chartPoint(lt_angle, aoi, 1, 'Angle');
-chartPoint(lt_b1, aoi, 1, 'B1');
-chartPoint(lt_b2, aoi, 1, 'B2');
-chartPoint(lt_b3, aoi, 1, 'B3');
-chartPoint(lt_b4, aoi, 1, 'B4');
-chartPoint(lt_b5, aoi, 1, 'B5');
-chartPoint(lt_b6, aoi, 1, 'B6');
-chartPoint(lt_b7, aoi, 1, 'B7');
+
+// get errors for each VI
+var getError = function(lt){
+  var index = lt.select(['rmse'])
+                .reduceRegion(ee.Reducer.first(), aoi, 10)
+                .get("rmse");
+  return index;
+}
+
+var error = {
+  'NDVI': getError(lt_ndvi),
+  'EVI': getError(lt_evi),
+  'GNDVI': getError(lt_gndvi),
+  'LSWI': getError(lt_lswi),
+  'Brightness': getError(lt_brightness),
+  'Greenness': getError(lt_greenness),
+  'Wetnness': getError(lt_wetness),
+  'Angle': getError(lt_angle),
+  'B1': getError(lt_b1),
+  'B2': getError(lt_b2),
+  'B3': getError(lt_b3),
+  'B4': getError(lt_b4),
+  'B5': getError(lt_b5),
+  'B7': getError(lt_b7),
+};
+
+print(error)
