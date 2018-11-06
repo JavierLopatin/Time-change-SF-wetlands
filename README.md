@@ -1,1 +1,1 @@
-# Time-change-SF-wetlands-01_LandTrendr_parameterization.js
+# Time series analysis using the LandTrendr algorithm of GEE
