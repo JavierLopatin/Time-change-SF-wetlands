@@ -4,7 +4,8 @@
 //#                                                                                                    #\\
 //########################################################################################################
 
-// works!!! 22
+// Description: parameterization and visualization of LandTrendr using
+//              different spectral indecies and bandas
 
 // date: 2018-11-05
 // author: Javier Lopatin | javier.lopatin@kit.edu; javierlopatin@gmail.com
@@ -19,6 +20,8 @@
 // show LandTrend for this point
 var aoi = ee.FeatureCollection(geometry);
 
+var ltgee = require('users/emaprlab/public:Modules/LandTrendr.js');
+
 // define years and dates to include in landsat image collection
 var startYear = 1987;    // what year do you want to start the time series
 var endYear   = 2017;    // what year do you want to end the time series
@@ -27,7 +30,7 @@ var endDay    = '09-30'; // what is the end of date filter | month-day
 
 
 //########################################################################################################
-//##### Spectral indices to use
+//##### Spectral indices and bands to use
 //########################################################################################################
 
 // calculate NDVI (B4-B3)/(B4+B3)
@@ -66,7 +69,7 @@ var LSWI = function(img) {
                    .set('system:time_start', img.get('system:time_start'));
     return index ;
 };
-// Brightness Tasseledcup: (BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)
+// asseled-Cap Brightness
 var Brightness = function(img) {
     var index = img.expression(
       '(BLUE * 0.2043) + (GREEN * 0.4158) + (RED * 0.5524) + (NIR * 0.5741) + (SWIR1 * 0.3124) + (SWIR2 * 0.2303)', {
@@ -81,6 +84,102 @@ var Brightness = function(img) {
                   .set('system:time_start', img.get('system:time_start'));
     return index ;
 };
+// Tasseled-Cap Greenness
+var Greenness = function(img) {
+    var index = img.expression(
+      '(BLUE * -0.1603) + (GREEN * -0.2819) + (RED * -0.4934) + (NIR * 0.7940) + (SWIR1 * -0.0002) + (SWIR2 * -0.1446)', {
+      'SWIR2': img.select('B7'),
+      'SWIR1': img.select('B5'),
+      'NIR': img.select('B4'),
+      'RED': img.select('B3'),
+      'GREEN': img.select('B2'),
+      'BLUE': img.select('B1')})
+                  .multiply(1000)
+                  .select([0], ['Greenness'])
+                  .set('system:time_start', img.get('system:time_start'));
+    return index ;
+};
+// Tasseled-Cap Wetness
+var Wetness = function(img) {
+    var index = img.expression(
+      '(BLUE * 0.0315) + (GREEN * 0.2021) + (RED * 0.3102) + (NIR * 0.1594) + (SWIR1 * -0.6806) + (SWIR2 * -0.6109)', {
+      'SWIR2': img.select('B7'),
+      'SWIR1': img.select('B5'),
+      'NIR': img.select('B4'),
+      'RED': img.select('B3'),
+      'GREEN': img.select('B2'),
+      'BLUE': img.select('B1')})
+                  .multiply(1000)
+                  .select([0], ['Wetness'])
+                  .set('system:time_start', img.get('system:time_start'));
+    return index ;
+};
+
+var Angle = function(img){
+  var b = ee.Image(img).select(["B1", "B2", "B3", "B4", "B5", "B7"]); // select the image bands
+  var brt_coeffs = ee.Image.constant([0.2043, 0.4158, 0.5524, 0.5741, 0.3124, 0.2303]); // set brt coeffs - make an image object from a list of values - each of list element represents a band
+  var grn_coeffs = ee.Image.constant([-0.1603, -0.2819, -0.4934, 0.7940, -0.0002, -0.1446]); // set grn coeffs - make an image object from a list of values - each of list element represents a band
+
+  var sum = ee.Reducer.sum(); // create a sum reducer to be applyed in the next steps of summing the TC-coef-weighted bands
+  var brightness = b.multiply(brt_coeffs).reduce(sum); // multiply the image bands by the brt coef and then sum the bands
+  var greenness = b.multiply(grn_coeffs).reduce(sum); // multiply the image bands by the grn coef and then sum the bands
+  var angle = (greenness.divide(brightness)).atan().multiply(180/Math.PI).multiply(100)
+                     .multiply(1000)
+                     .select([0], ['Angle'])
+                     .set('system:time_start', img.get('system:time_start'));
+  return angle;
+};
+
+// spectral bands
+var B1 = function(img){
+  var index = img.select('B1')
+                  .multiply(1000)
+                  .select([0], ['B1'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B2 = function(img){
+  var index = img.select('B2')
+                  .multiply(1000)
+                  .select([0], ['B2'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B3 = function(img){
+  var index = img.select('B3')
+                  .multiply(1000)
+                  .select([0], ['B3'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B4 = function(img){
+  var index = img.select('B4')
+                  .multiply(1000)
+                  .select([0], ['B4'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B5 = function(img){
+  var index = img.select('B5')
+                  .multiply(1000)
+                  .select([0], ['B5'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B6 = function(img){
+  var index = img.select('B6')
+                  .multiply(1000)
+                  .select([0], ['B6'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
+var B7 = function(img){
+  var index = img.select('B7')
+                  .multiply(1000)
+                  .select([0], ['B7'])
+                  .set('system:time_start', img.get('system:time_start'));
+  return index;
+};
 
 
 //########################################################################################################
@@ -94,7 +193,7 @@ var run_params = {
   vertexCountOvershoot:   3,
   preventOneYearRecovery: true,
   recoveryThreshold:      0.25,
-  pvalThreshold:          0.5,
+  pvalThreshold:          0.05,
   bestModelProportion:    0.75,
   minObservationsNeeded:  6
 };
@@ -243,9 +342,7 @@ var chartPoint = function(lt, pt, distDir, title) {
   var options = {
   title: title,
   vAxis: {
-    title: 'Spectral values * 1000',
-    'maxValue': 1000,
-    'minValue': -1000
+    title: 'Spectral values',
     },
   hAxis: {
     title: 'Years',
@@ -291,13 +388,36 @@ var lt_evi = applyLandTrendr(EVI, -1);
 var lt_gndvi = applyLandTrendr(GNDVI, -1);
 // using LSWI
 var lt_lswi = applyLandTrendr(LSWI, -1);
-// using Brightness tasseled cup
-var lt_brightness = applyLandTrendr(Brightness, -1);
-
+// using Tasseled-Cup Brightness
+var lt_brightness = applyLandTrendr(Brightness, 1);
+// using Tasseled-Cup Greenness
+var lt_greenness = applyLandTrendr(Greenness, 1);
+// using Tasseled-Cup Brightness
+var lt_wetness = applyLandTrendr(Wetness, 1);
+// using Tasseled-Cup Angle
+var lt_angle = applyLandTrendr(Angle, 1);
+// using bands
+var lt_b1 = applyLandTrendr(B1, 1);
+var lt_b2 = applyLandTrendr(B1, 2);
+var lt_b3 = applyLandTrendr(B1, 3);
+var lt_b4 = applyLandTrendr(B1, 4);
+var lt_b5 = applyLandTrendr(B1, 5);
+var lt_b6 = applyLandTrendr(B1, 6);
+var lt_b7 = applyLandTrendr(B1, 7);
 
 //----- PLOT THE SOURCE AND FITTED TIME SERIES FOR THE GIVEN POINT -----
 chartPoint(lt_ndvi, aoi, -1, 'NDVI'); // plot the x-y time series for the given point
 chartPoint(lt_evi, aoi, -1, 'EVI');
 chartPoint(lt_gndvi, aoi, -1, 'GNDI');
 chartPoint(lt_lswi, aoi, -1, 'LSWI');
-chartPoint(lt_lswi, aoi, -1, 'Brightness');
+chartPoint(lt_brightness, aoi, 1, 'Brightness');
+chartPoint(lt_greenness, aoi, 1, 'Greenness');
+chartPoint(lt_wetness, aoi, 1, 'Wetness');
+chartPoint(lt_angle, aoi, 1, 'Angle');
+chartPoint(lt_b1, aoi, 1, 'B1');
+chartPoint(lt_b2, aoi, 1, 'B2');
+chartPoint(lt_b3, aoi, 1, 'B3');
+chartPoint(lt_b4, aoi, 1, 'B4');
+chartPoint(lt_b5, aoi, 1, 'B5');
+chartPoint(lt_b6, aoi, 1, 'B6');
+chartPoint(lt_b7, aoi, 1, 'B7');
