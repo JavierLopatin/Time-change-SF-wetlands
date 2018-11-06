@@ -7,7 +7,7 @@
 // Description: parameterization and visualization of LandTrendr using
 //              different spectral indecies and bandas
 
-// date: 2018-11-05
+// date: 2018-11
 // author: Javier Lopatin | javier.lopatin@kit.edu; javierlopatin@gmail.com
 // Based on the information posted in: https://github.com/eMapR/LT-GEE
 
