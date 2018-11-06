@@ -395,6 +395,18 @@ var lt_b7 = applyLandTrendr(B7, 1);
 
 //----- PLOT THE SOURCE AND FITTED TIME SERIES FOR THE GIVEN POINT -----
 chartPoint(lt_ndvi, aoi, -1, 'NDVI'); // plot the x-y time series for the given point
+chartPoint(lt_evi, aoi, -1, 'EVI');
+chartPoint(lt_gndvi, aoi, -1, 'GNDVI');
+chartPoint(lt_lswi, aoi, -1, 'LSWI');
+chartPoint(lt_brightness, aoi, 1, 'Brightness');
+chartPoint(lt_greenness, aoi, 1, 'Greenness');
+chartPoint(lt_wetness, aoi, 1, 'Wetnness');
+chartPoint(lt_b1, aoi, 1, 'B1');
+chartPoint(lt_b2, aoi, 1, 'B2');
+chartPoint(lt_b3, aoi, 1, 'B3');
+chartPoint(lt_b4, aoi, 1, 'B4');
+chartPoint(lt_b5, aoi, 1, 'B5');
+chartPoint(lt_b7, aoi, 1, 'B7');
 
 // get errors for each VI
 var getError = function(lt){
