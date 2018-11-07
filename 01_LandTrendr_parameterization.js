@@ -29,11 +29,11 @@ var startYear = 1985;
 var endYear = 2017;
 var startDay = '06-20';
 var endDay = '09-20';
-var point = ee.FeatureCollection(geometry);
-var aoi = delta;
-var index = ['NBR', 'EVI', 'TCB', 'TCG','TCW']
+var point = ee.FeatureCollection(geometry); // point o evaluate LT
+var aoi = delta; // limit study area
+var index = ['NBR', 'EVI', 'TCB', 'TCG','TCW','B1','B2','B3','B4','B5','B7'] // indices and bands to test
 var ftvList = [];
-var runParams = {
+var runParams = { // LT parameters
   maxSegments:            6,
   spikeThreshold:         0.9,
   vertexCountOvershoot:   3,
@@ -43,7 +43,7 @@ var runParams = {
   bestModelProportion:    0.75,
   minObservationsNeeded:  6
 };
-var maskThese = ['cloud', 'shadow', 'snow', 'water']
+var maskThese = ['cloud', 'shadow', 'snow', 'water'] // elements to mask out the images
 
 //########################################################################################################
 //##### FUNCTIONS FOR EXTRACTING AND PLOTTING A PIXEL TIME SERIES #####
