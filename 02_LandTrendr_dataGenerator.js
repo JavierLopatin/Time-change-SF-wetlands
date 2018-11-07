@@ -5,7 +5,9 @@
 //########################################################################################################
 
 
-// date: 2018-11-05
+// Description: create a stack of the LandTrendr segments
+
+// date: 2018-11
 // author: Javier Lopatin | javier.lopatin@kit.edu; javierlopatin@gmail.com
 // Based on the information posted in: https://github.com/eMapR/LT-GEE
 
@@ -14,9 +16,24 @@
 //##### INPUTS #####
 //########################################################################################################
 
-// define a geometry - there are lots of ways to do this, see the GEE User guide
-var aoi = delta; // should be a GEE geometry object
+// show LandTrend for this point
+var aoi = delta;
 
+// load LandTrendr estimation funciton
+var func = require('users/javierlopatin/SF_delta:00_LandTrendr_Functions')
+
+// define the segmentation parameters:
+// reference: Kennedy, R. E., Yang, Z., & Cohen, W. B. (2010). Detecting trends in forest disturbance and recovery using yearly Landsat time series: 1. LandTrendr—Temporal segmentation algorithms. Remote Sensing of Environment, 114(12), 2897-2910.
+var run_params = {
+  maxSegments:            6,
+  spikeThreshold:         0.9,
+  vertexCountOvershoot:   3,
+  preventOneYearRecovery: true,
+  recoveryThreshold:      0.25,
+  pvalThreshold:          0.05,
+  bestModelProportion:    0.75,
+  minObservationsNeeded:  6
+};
 
 //########################################################################################################
 //##### UNPACKING LT-GEE OUTPUT STRUCTURE FUNCTIONS #####
@@ -52,41 +69,47 @@ var getLTvertStack = function(LTresult) {
 };
 
 
-//########################################################################################################
-//##### BUILD COLLECTION #####
-//########################################################################################################
-
-
 //----- EXTRACT DATA FROM THE LT-GEE STRUCTURE -----
 // extract the year, raw spectral value, and fitted values for vertices as stacked bands
-var ltVertStack = getLTvertStack(lt.select(["LandTrendr"])).clip(aoi); // select out the "LandTrendr" band
+var ltVertStack = function(lt){
+  index = getLTvertStack(lt.select(["LandTrendr"])).clip(aoi); // select out the "LandTrendr" band
+  // extract the segmentation-fitted index stack as
+  var years = [];                                                           // make an empty array to hold year band names
+  for (var i = startYear; i <= endYear; ++i) years.push('yr'+i.toString()); // fill the array with years from the startYear to the endYear and convert them to string
+  var ltFitStack = lt.select([1])                                           // select out the 2nd band data which is the segmentation-fitted spectral index
+                     .arrayFlatten([years]).clip(aoi);                      // ...flatten is out into band, assigning the year as the band name
+  return index;
+};
 
-// extract the segmentation-fitted index stack as
-var years = [];                                                           // make an empty array to hold year band names
-for (var i = startYear; i <= endYear; ++i) years.push('yr'+i.toString()); // fill the array with years from the startYear to the endYear and convert them to string
-var ltFitStack = lt.select([1])                                           // select out the 2nd band data which is the segmentation-fitted spectral index
-                   .arrayFlatten([years]).clip(aoi);                      // ...flatten is out into band, assigning the year as the band name
-print(years)
+//###############################################################################
+// Run funcitons
+//###############################################################################
+
+// get Landsat 5,7,8 homogenized collection
+var ltCollector = func.ltCollector(run_params, aoi); // (run_param, aoi)
+
+// LT
+var lt_ndvi = func.applyLT('NDVI', ltCollector, run_params, -1); //(VI, annualSRcollection, run_params, distDir)
+
+// Apply function to extract predicted stacked
+var vstack_NDVI = ltVertStack(lt_ndvi);
 
 // show the vertex information and fitted imagery
 var imageVisParam = {"opacity":1,"bands":["yr1987","yr2001","yr2017"],"gamma":1};
-Map.centerObject(geometry, 10);
-//Map.addLayer(ltVertStack, {}, 'Vert Info');
-Map.addLayer(ltFitStack.select(['yr1987', 'yr2001', 'yr2017']), imageVisParam, 'RGB Change');
 
-// Save results to Drive
+//Map.addLayer(ltVertStack, {}, 'Vert Info');
+Map.addLayer(vstack_NDVI.select(['yr1987', 'yr2001', 'yr2017']), imageVisParam, 'RGB Change');
+
+
+
+
+
+
+
 //Export.image.toDrive({
-//  image: ltVertStack,
-//  description: 'LandTrendr_VertStack',
+//  image: ltFitStack,
+//  description: 'LandTrendr_FitStack',
 //  folder: 'data_earth_engine',
 //  scale: 30,
 //  region: geometry
 //});
-
-Export.image.toDrive({
-  image: ltFitStack,
-  description: 'LandTrendr_FitStack',
-  folder: 'data_earth_engine',
-  scale: 30,
-  region: geometry
-});
