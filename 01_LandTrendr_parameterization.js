@@ -24,13 +24,6 @@ var aoi = delta;
 // load LandTrendr estimation funciton
 var func = require('users/javierlopatin/SF_delta:00_LandTrendr_Functions')
 
-// define years and dates to include in landsat image collection
-var startYear = 1987;    // what year do you want to start the time series
-var endYear   = 2017;    // what year do you want to end the time series
-var startDay  = '06-01'; // what is the beginning of date filter | month-day
-var endDay    = '09-30'; // what is the end of date filter | month-day
-
-
 // define the segmentation parameters:
 // reference: Kennedy, R. E., Yang, Z., & Cohen, W. B. (2010). Detecting trends in forest disturbance and recovery using yearly Landsat time series: 1. LandTrendr—Temporal segmentation algorithms. Remote Sensing of Environment, 114(12), 2897-2910.
 var run_params = {
