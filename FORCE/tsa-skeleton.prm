@@ -1,0 +1,149 @@
+++PARAM_TSA_START++
+
+# DIRECTORIES
+# ------------------------------------------------------------------------
+# Level-2 datapool (input)
+DIR_LEVEL2 = /home/javier/Documents/SF_delta/Sentinel/Level2
+# Analysis Mask datapool (input, optional)
+DIR_MASK = NULL
+# Time Series Analysis datapool (output)
+DIR_TSA = /home/javier/Documents/SF_delta/Sentinel/TSA
+# White list of input/output tiles
+FILE_TILE  = NULL
+# Endmember file (only needed if INDEX = SMA
+FILE_ENDMEM  = NULL
+
+# SENSOR WHITE LIST
+# ------------------------------------------------------------------------
+# Select observations from following sensors
+# See documentation for valid keys
+SENSORS = SEN2A SEN2B
+
+# QAI SCREENING
+# ------------------------------------------------------------------------
+# This list controls, which QAI flags are masked out.
+# See documentation for valid keys
+SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_BUFFER CLOUD_CIRRUS CLOUD_SHADOW SNOW SUBZERO SATURATION
+
+# SPATIAL PROPERTIES
+# ------------------------------------------------------------------------
+# Analysis extent in tile coordinates
+X_TILE_MIN = 0
+Y_TILE_MIN = 0
+X_TILE_MAX = 9999
+Y_TILE_MAX = 9999
+# Spatial resolution of composite
+# Image decimation/replication is taken care of
+RESOLUTION = 10
+# Use an approx. Point Spread Function when reducing spatial resolution
+REDUCE_PSF = FALSE
+# Use ImproPhe'd data at better spatial resolution?
+USE_IMPROPHE = FALSE
+
+# TEMPORAL PROPERTIES
+# ------------------------------------------------------------------------
+# DOY range
+DOY_MIN = 1
+DOY_MAX = 366
+# Month range
+MONTH_MIN = 1
+MONTH_MAX = 12
+# Year range
+YEAR_MIN = 2015
+YEAR_MAX = 2018
+
+# TIME SERIES PARAMETERS
+# ------------------------------------------------------------------------
+# Spectral Index
+# See documentation for valid keys
+INDEX = EVI
+# Center around pixel mean
+CENTER = FALSE
+# Standardize with pixel mean and standard deviation
+STANDARD = FALSE
+# Fold by ...
+# See documentation for valid keys
+TREND = YEAR
+# Folding method
+# See documentation for valid keys
+FOLD = AVG
+# Tail-type for trend analysis
+# See documentation for valid keys
+TAIL = TWO
+# Confidence level for trend analysis
+CONF = 0.95
+# Filter spikes that are higher than this value
+# Values are in unscaled index units
+# Give 0 to disable despiking
+DESPIKE = 0
+
+# SPECTRAL UNMIXING PARAMETERS
+# ------------------------------------------------------------------------
+# This block only applies if INDEX = SMA
+# Sum-to-One constrained unmixing?
+SMA_SUM_TO_ONE = TRUE
+# Non-negativity constrained unmixing?
+SMA_NON_NEG = TRUE
+# Apply shade normalization?
+SMA_SHD_NORM = TRUE
+# Endmember number
+SMA_ENDMEMBER = 1
+
+# INTERPOLATION PARAMETERS
+# ------------------------------------------------------------------------
+# Interpolation method
+# See documentation for valid keys
+INTERPOLATE = NONE
+# Max temporal distance for moving average filter
+MOVING_MAX = 16
+# Sigmas for RBF fits
+RBF_SIGMA = 8 16 32
+# Cutoff density for RBF fit
+RBF_CUTOFF = 0.95
+# Interpolate each n days
+INT_DAY = 16
+
+# PHENOLOGY PARAMETERS
+# ------------------------------------------------------------------------
+# Use data from this date (year-1)
+LSP_DOY_PREV_YEAR = 90
+# Until this date (year+1)
+LSP_DOY_NEXT_YEAR = 182
+# Seasonality is of Northern/Southern/Mixed type (0/1/2)
+LSP_HEMISPHERE = 0
+# Number of segments for the spline per year
+LSP_N_SEGMENT = 4
+
+# MISCELLANEOUS
+# ------------------------------------------------------------------------
+# Number of CPUs for parallel processing
+NUM_CPU = 2
+
+# OUTPUT
+# ------------------------------------------------------------------------
+# Output format (ENVI or GTiff)
+OUTPUT_FORMAT = GTiff
+# Time Series Stack
+OUTPUT_TSS = TRUE
+# Model Residuals (SMA only)
+OUTPUT_RMS = FALSE
+# Basic Statistics
+OUTPUT_STA = TRUE
+# Time Series Interpolation
+OUTPUT_TSI = FALSE
+# Fold Time Series by Year
+OUTPUT_FBY = FALSE
+# Fold Time Series by Month
+OUTPUT_FBM = FALSE
+# Fold Time Series by Week
+OUTPUT_FBW = FALSE
+# Fold Time Series by Day
+OUTPUT_FBD = FALSE
+# Trend Analysis
+OUTPUT_TRD = FALSE
+# Change, Aftereffect, Trend Analysis
+OUTPUT_CAT = TRUE
+# LSP metrics (SPLITS is required)
+OUTPUT_LSP = FALSE
+
+++PARAM_TSA_END++
