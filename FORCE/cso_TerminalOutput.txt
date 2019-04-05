@@ -1,0 +1,37 @@
+┌─[javier]-[/home/javier]
+└─[$]-> force-cso /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/cso-skeleton.prm
+CSO processing   0.00%, I/C/O 022/058/020, ETA: 444444h 25m 36s
+
+Overall stats:
+
+NUM
+2015.00 - min: 000, mean-sd: 000.00, mean: 000.00, mean+sd: 000.00, max: 000
+2015.50 - min: 000, mean-sd: 000.00, mean: 000.00, mean+sd: 000.00, max: 000
+2016.00 - min: 000, mean-sd: -00.62, mean: 000.17, mean+sd: 000.96, max: 008
+2016.50 - min: 000, mean-sd: -01.19, mean: 000.33, mean+sd: 001.85, max: 016
+2017.00 - min: 000, mean-sd: -00.74, mean: 000.21, mean+sd: 001.15, max: 010
+2017.50 - min: 000, mean-sd: -02.24, mean: 000.64, mean+sd: 003.53, max: 028
+2018.00 - min: 000, mean-sd: -01.53, mean: 000.44, mean+sd: 002.41, max: 020
+2018.50 - min: 000, mean-sd: -01.75, mean: 000.50, mean+sd: 002.75, max: 021
+
+AVG
+2015.00 - min: 181, mean-sd: 072.45, mean: 123.41, mean+sd: 174.37, max: 181
+2015.50 - min: 184, mean-sd: 073.65, mean: 125.45, mean+sd: 177.26, max: 184
+2016.00 - min: 020, mean-sd: 068.03, mean: 119.69, mean+sd: 171.35, max: 180
+2016.50 - min: 011, mean-sd: 068.75, mean: 121.51, mean+sd: 174.26, max: 183
+2017.00 - min: 016, mean-sd: 067.89, mean: 119.63, mean+sd: 171.37, max: 180
+2017.50 - min: 006, mean-sd: 068.43, mean: 121.37, mean+sd: 174.31, max: 183
+2018.00 - min: 008, mean-sd: 067.46, mean: 119.44, mean+sd: 171.43, max: 180
+2018.50 - min: 008, mean-sd: 068.52, mean: 121.41, mean+sd: 174.30, max: 183
+
+STD
+2015.00 - min: 000, mean-sd: 000.00, mean: 000.00, mean+sd: 000.00, max: 000
+2015.50 - min: 000, mean-sd: 000.00, mean: 000.00, mean+sd: 000.00, max: 000
+2016.00 - min: 000, mean-sd: -02.78, mean: 000.49, mean+sd: 003.76, max: 051
+2016.50 - min: 000, mean-sd: -00.69, mean: 000.11, mean+sd: 000.91, max: 029
+2017.00 - min: 000, mean-sd: -01.53, mean: 000.27, mean+sd: 002.07, max: 031
+2017.50 - min: 000, mean-sd: -00.39, mean: 000.07, mean+sd: 000.52, max: 025
+2018.00 - min: 000, mean-sd: -00.51, mean: 000.09, mean+sd: 000.69, max: 032
+2018.50 - min: 000, mean-sd: -01.49, mean: 000.26, mean+sd: 002.02, max: 032
+
+Total runtime: 08 mins 51 secs
