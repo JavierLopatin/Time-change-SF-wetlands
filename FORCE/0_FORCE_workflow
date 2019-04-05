@@ -1,0 +1,47 @@
+
+# FORCE workflow to download and process S2 data
+
+# add FORCE functions to $PATH
+PATH=$PATH:$HOME/bin/
+
+# check if it worked:
+echo $PATH
+
+# Download S2 images
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.567/38.490,-121.864/38.277,-122.630/38.239,-122.558/37.882,-121.850/37.912,-121.498/37.680,-121.270/37.788,-121.240/37.984,-121.419/38.465,-121.567/38.490,-121.567/38.490 2015-09-01 2018-10-17 0 60
+
+# Level 2 Processing System is intended to generate Analysis Ready Data (ARD),
+# i.e. harmonized, standardized and radiometrically consistent Level 2 products. This includes
+# cloud and cloud shadow detection, radiometric correction and data cubing.
+
+# generate a parameter file skeleton, i.e. an empty parameter file.
+force-parameter-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
+
+# run Level 2 processing. Parameters: parameter file, PCU cores, delay time (recommended 20 for S2)
+force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 1 20
+
+# problems finding "libgsl.so.19...so:
+# find libgsl.so.19 location
+sudo find / -name "libgsl.so.19"
+# and that path to the LD path
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/javier/miniconda3/lib/
+export LD_LIBRARY_PATH
+
+# then try again:
+force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 1 20
+
+# get clear sky observations
+# get parameterfile
+force-parameter-cso /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
+# run cso
+force-cso /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/cso-skeleton.prm
+# mosaic results
+force-mosaic /home/javier/Documents/SF_delta/Sentinel/CSO
+
+# TSA - Time series analysis
+# generate a helper that generates a parameter file skeleton
+force-parameter-tsa /home/javier/Documents/SF_delta/Sentinel
+# run tsa
+force-tsa /home/javier/Documents/SF_delta/Sentinel/tsa-skeleton.prm
+# mosaic results
+force-mosaic /home/javier/Documents/SF_delta/Sentinel/TSA

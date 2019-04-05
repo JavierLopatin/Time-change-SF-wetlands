@@ -1,0 +1,83 @@
+	++PARAM_LEVEL2_START++
+
+# DIRECTORIES
+# ------------------------------------------------------------------------
+# file queue
+FILE_QUEUE = /home/javier/Documents/SF_delta/Sentinel/new_pool_file.pool
+# output directory for Level 2 data
+DIR_LEVEL2 = /home/javier/Documents/SF_delta/Sentinel/Level2
+# temporary directory for decompressed data
+DIR_TEMP   = /home/javier/Documents/SF_delta/Sentinel/temp
+# water vapor look-up-tables
+DIR_WVPLUT = NULL
+# aerosol optical depth look-up-tables
+DIR_AOD   = NULL
+# DEM file
+FILE_DEM = /home/javier/Documents/SF_delta/dem/dem_all.tif
+# tile white list
+FILE_TILE  = NULL
+
+# SPATIAL PROPERTIES
+# ------------------------------------------------------------------------
+# reproject and/or tile
+DO_REPROJ  = FALSE
+DO_TILE    = TRUE
+# tile size in target projection units
+TILE_SIZE  = 30000
+# output resolution in target projection units
+RESOLUTION = 10
+# origin of the tiles
+ORIGIN_LAT = 38
+ORIGIN_LON = -121
+# Target Projection in WKT, 2 lines!!!
+
+# resampling option (one out of NN, BL, CC)
+RESAMPLING = CC
+# Resolution Merge (is ignored, if not Sentinel-2)
+RES_MERGE = IMPROPHE
+# Acceptable tier level
+TIER = 1
+
+# RADIOMETRIC CORRECTION OPTIONS
+# ------------------------------------------------------------------------
+# apply topographic correction
+DO_TOPO = TRUE
+# apply atmospheric correction
+DO_ATMO = TRUE
+# apply BRDF correction
+DO_BRDF = TRUE
+# image-based dark objects
+DO_AOD  = TRUE
+
+# ADVANCED RADIOMETRIC CORRECTION OPTIONS
+# ------------------------------------------------------------------------
+MULTI_SCATTERING = TRUE
+ADJACENCY_EFFECT = TRUE
+SUN_VIEW_GRID    = 5000
+WATER_VAPOR      = 1.0
+
+# CLOUD DETECTION OPTIONS
+# ------------------------------------------------------------------------
+# max. cloud/shadow cover
+MAX_CLOUD_COVER_FRAME = 75
+MAX_CLOUD_COVER_TILE  = 75
+# Fmask thresholds
+CLOUD_THRESHOLD  = 0.225
+SHADOW_THRESHOLD = 0.02
+
+# OUTPUT OPTIONS
+# ------------------------------------------------------------------------
+# Output format (ENVI or GTiff)
+OUTPUT_FORMAT = GTiff
+# generate cloud distance output?
+OUTPUT_CLD     = TRUE
+# generate AOD@green output?
+OUTPUT_AOD     = TRUE
+# generate WVP?
+OUTPUT_WVP     = TRUE
+# generate view zenith output?
+OUTPUT_VZN = TRUE
+# generate HOT output?
+OUTPUT_HOT     = TRUE
+
+++PARAM_LEVEL2_END++

@@ -1,0 +1,77 @@
+++PARAM_CSO_START++
+
+# DIRECTORIES
+# ------------------------------------------------------------------------
+# Level-2 datapool (input)
+DIR_LEVEL2 = /home/javier/Documents/SF_delta/Sentinel/Level2
+# CSO datapool (output)
+DIR_CSO = /home/javier/Documents/SF_delta/Sentinel/CSO
+# White list of input/output tiles
+FILE_TILE  = NULL
+
+# SENSOR WHITE LIST
+# ------------------------------------------------------------------------
+# Select observations from following sensors
+# See documentation for valid keys
+SENSORS = SEN2A SEN2B
+
+# QAI SCREENING
+# ------------------------------------------------------------------------
+# This list controls, which QAI flags are masked out.
+# See documentation for valid keys
+SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_BUFFER CLOUD_CIRRUS CLOUD_SHADOW SNOW SUBZERO SATURATION
+
+# SPATIAL PROPERTIES
+# ------------------------------------------------------------------------
+# Composite extent in tile coordinates
+X_TILE_MIN = 0
+Y_TILE_MIN = 0
+X_TILE_MAX = 9999
+Y_TILE_MAX = 9999
+# Spatial resolution of composite
+# Image decimation/replication is taken care of
+RESOLUTION = 10
+
+# TEMPORAL PROPERTIES
+# ------------------------------------------------------------------------
+# Year range
+YEAR_MIN = 2015
+YEAR_MAX = 2018
+# Intervall in months
+MONTH_STEP = 6
+
+# MISCELLANEOUS
+# ------------------------------------------------------------------------
+# Number of CPUs for parallel processing
+NUM_CPU = 3
+
+# OUTPUT
+# ------------------------------------------------------------------------
+# Output format (ENVI or GTiff)
+OUTPUT_FORMAT = GTiff
+# Number of clear-sky obs.
+OUTPUT_NUM = TRUE
+# Average of dt of clear-sky obs.
+OUTPUT_AVG = TRUE
+# Standard dev. of dt of clear-sky obs.
+OUTPUT_STD = TRUE
+# Minimum of dt of clear-sky obs.
+OUTPUT_MIN = FALSE
+# Maximum of dt of clear-sky obs.
+OUTPUT_MAX = FALSE
+# Range of dt of clear-sky obs.
+OUTPUT_RNG = FALSE
+# Skewness of dt of clear-sky obs.
+OUTPUT_SKW = FALSE
+# Kurtosis of dt of clear-sky obs.
+OUTPUT_KRT = FALSE
+# 25%-Quantiles of dt of clear-sky obs.
+OUTPUT_Q25 = FALSE
+# 50%-Quantiles of dt of clear-sky obs.
+OUTPUT_Q50 = FALSE
+# 75%-Quantiles of dt of clear-sky obs.
+OUTPUT_Q75 = FALSE
+# Interquantile range of dt of clear-sky obs.
+OUTPUT_IQR = FALSE
+
+++PARAM_CSO_END++
