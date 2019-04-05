@@ -40,7 +40,7 @@ force-mosaic /home/javier/Documents/SF_delta/Sentinel/CSO
 
 # TSA - Time series analysis
 # generate a helper that generates a parameter file skeleton
-force-parameter-tsa /home/javier/Documents/SF_delta/Sentinel
+force-parameter-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
 # run tsa
 force-tsa /home/javier/Documents/SF_delta/Sentinel/tsa-skeleton.prm
 # mosaic results
