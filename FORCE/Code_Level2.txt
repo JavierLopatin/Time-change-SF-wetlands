@@ -1,0 +1,8 @@
+BOA Bottom-of-Atmosphere Reflectance (standard output, scale: 10000, nodata: -9999)
+TOA Top-of-Atmosphere Reflectance (secondary standard output, scale: 10000, nodata: -9999)
+QAI Quality Assurance Information (standard output, bit coding, nodata: 1)
+AOD Aerosol Optical Depth (550 nm, optional output, scale: 1000, nodata: -9999)
+CLD Cloud / Cloud shadow distance (optional output, scale: 10000, nodata: -9999)
+WVP Water vapor (optional output, scale: 1000, nodata: -9999)
+VZN View zenith (optional output, scale: 100, nodata: -9999)
+HOT Haze Optimized Transformation (optional output, scale: 10000, nodata: -9999)
