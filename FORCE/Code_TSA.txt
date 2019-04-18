@@ -1,0 +1,11 @@
+TSS Time Series Stack
+RMS RMSE Time Series of SMA
+STA Basic Statistics
+TSI Time Series Interpolation
+TRD Trend Analysis
+CAT Extended CAT Analysis
+FBY Fold-by-Year Stack
+FBM Fold-by-Month Stack
+FBW Fold-by-Week Stack
+FBD Fold-by-Day Stack
+*** 26 Land Surface Phenology metrics (refer to next subsection)
