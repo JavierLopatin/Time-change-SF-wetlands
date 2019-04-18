@@ -30,6 +30,11 @@ export LD_LIBRARY_PATH
 # then try again:
 force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 1 20
 
+# revise the outputs to save space. Python routine to
+# delete folders (tiles) of Level2 that do not intersept
+# with the study area (polygon)
+python /home/javier/Documents/SF_delta/Sentinel/FORCE_Level2_clean.py
+
 # get clear sky observations
 # get parameterfile
 force-parameter-cso /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
@@ -38,10 +43,10 @@ force-cso /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/cso-skelet
 # mosaic results
 force-mosaic /home/javier/Documents/SF_delta/Sentinel/CSO
 
-# TSA - Time series analysis
+# TSA - Time series analysis using EVI vegetation index
 # generate a helper that generates a parameter file skeleton
 force-parameter-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
 # run tsa
-force-tsa /home/javier/Documents/SF_delta/Sentinel/tsa-skeleton.prm
+force-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/tsa-skeleton.prm
 # mosaic results
 force-mosaic /home/javier/Documents/SF_delta/Sentinel/TSA
