@@ -1,5 +1,0 @@
-┌─[javier]-[/home/javier]
-└─[$]-> force-tsa /home/javier/Documents/SF_delta/Sentinel/tsa-skeleton.prm
-TSA processing   0.03%, I/C/O 037/045/018, ETA: 408h 11m 50s 18s
-
-Total runtime: 15 mins 38 secs
