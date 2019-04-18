@@ -28,10 +28,10 @@ SCREEN_QAI = NODATA CLOUD_OPAQUE CLOUD_BUFFER CLOUD_CIRRUS CLOUD_SHADOW SNOW SUB
 # SPATIAL PROPERTIES
 # ------------------------------------------------------------------------
 # Analysis extent in tile coordinates
-X_TILE_MIN = 0
-Y_TILE_MIN = 0
-X_TILE_MAX = 9999
-Y_TILE_MAX = 9999
+X_TILE_MIN = -6
+Y_TILE_MIN = -4
+X_TILE_MAX = 0
+Y_TILE_MAX = 3
 # Spatial resolution of composite
 # Image decimation/replication is taken care of
 RESOLUTION = 10
