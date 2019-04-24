@@ -7,7 +7,7 @@ DIR_LEVEL2 = /home/javier/Documents/SF_delta/Sentinel/Level2
 # Analysis Mask datapool (input, optional)
 DIR_MASK = NULL
 # Time Series Analysis datapool (output)
-DIR_TSA = /home/javier/Documents/SF_delta/Sentinel/TSA
+DIR_TSA = /home/javier/Documents/SF_delta/Sentinel/TSA_LSP
 # White list of input/output tiles
 FILE_TILE  = NULL
 # Endmember file (only needed if INDEX = SMA
@@ -66,7 +66,7 @@ STANDARD = FALSE
 TREND = YEAR
 # Folding method
 # See documentation for valid keys
-FOLD = AVG
+FOLD = LSP
 # Tail-type for trend analysis
 # See documentation for valid keys
 TAIL = TWO
@@ -144,6 +144,6 @@ OUTPUT_TRD = TRUE
 # Change, Aftereffect, Trend Analysis
 OUTPUT_CAT = TRUE
 # LSP metrics (SPLITS is required)
-OUTPUT_LSP = FALSE
+OUTPUT_LSP = TRUE
 
 ++PARAM_TSA_END++

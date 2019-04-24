@@ -46,7 +46,18 @@ force-mosaic /home/javier/Documents/SF_delta/Sentinel/CSO
 # TSA - Time series analysis using EVI vegetation index
 # generate a helper that generates a parameter file skeleton
 force-parameter-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
-# run tsa
+# run tsa without LSP analysis
 force-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/tsa-skeleton.prm
+# run tsa with LSP analysis
+force-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/tsa-skeleton_LSP.prm
+###### This gave an endless loop with an error message:OpenBLAS Warning : Detect OpenMP and this aplication may hang. Please rebuilt the library with USE_OPENMP=1 option
+
 # mosaic results
 force-mosaic /home/javier/Documents/SF_delta/Sentinel/TSA
+# crop the mosaicked raster using a shapefile
+gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT_Crop.tif
+gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA_Crop.tif
+gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS_Crop.tif
+
+# get dates form Level2 folders
+python get_dates.py -i /home/javier/Documents/SF_delta/Sentinel/Level2/X-001_Y0000 -o /home/javier/Documents/SF_delta/Sentinel
