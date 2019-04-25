@@ -8,7 +8,7 @@ PATH=$PATH:$HOME/bin/
 echo $PATH
 
 # Download S2 images
-force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.567/38.490,-121.864/38.277,-122.630/38.239,-122.558/37.882,-121.850/37.912,-121.498/37.680,-121.270/37.788,-121.240/37.984,-121.419/38.465,-121.567/38.490,-121.567/38.490 2015-09-01 2018-10-17 0 60
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.567/38.490,-121.864/38.277,-122.630/38.239,-122.558/37.882,-121.850/37.912,-121.498/37.680,-121.270/37.788,-121.240/37.984,-121.419/38.465,-121.567/38.490,-121.567/38.490 2015-01-01 2019-04-25 0 60
 
 # Level 2 Processing System is intended to generate Analysis Ready Data (ARD),
 # i.e. harmonized, standardized and radiometrically consistent Level 2 products. This includes
@@ -55,9 +55,9 @@ force-tsa /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/tsa-skelet
 # mosaic results
 force-mosaic /home/javier/Documents/SF_delta/Sentinel/TSA
 # crop the mosaicked raster using a shapefile
-gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT_Crop.tif
-gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA_Crop.tif
-gdalwarp -cutline /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS_Crop.tif
+gdalwarp -cutline /home/javier/Documents/SF_delta/shp/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_CAT_Crop.tif
+gdalwarp -cutline /home/javier/Documents/SF_delta/shp/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_STA_Crop.tif
+gdalwarp -cutline /home/javier/Documents/SF_delta/shp/delta_all_mask_diss_proj.shp /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS.vrt /home/javier/Documents/SF_delta/Sentinel/TSA/mosaic/2015-2018_001-365_LEVEL4_TSA_SEN2L_EVI_C0_S0_FAVG_TY_C95T_TSS_Crop.tif
 
 # get dates form Level2 folders
-python get_dates.py -i /home/javier/Documents/SF_delta/Sentinel/Level2/X-001_Y0000 -o /home/javier/Documents/SF_delta/Sentinel
+python get_dates.py -i /home/javier/Documents/SF_delta/Sentinel/Level2/X-004_Y-001 -o /home/javier/Documents/SF_delta/Sentinel
