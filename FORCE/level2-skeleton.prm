@@ -3,7 +3,7 @@
 # DIRECTORIES
 # ------------------------------------------------------------------------
 # file queue
-FILE_QUEUE = /home/javier/Documents/SF_delta/Sentinel/new_pool_file.pool
+FILE_QUEUE = /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool
 # output directory for Level 2 data
 DIR_LEVEL2 = /home/javier/Documents/SF_delta/Sentinel/Level2
 # temporary directory for decompressed data
