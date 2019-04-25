@@ -2,10 +2,8 @@
 # A funciton to change all loged DONE by QUEUED in the level1
 # FORCE pool database
 #
-# @Author: javier
 # @Date:   2018-11-29T16:11:47-08:00
 # @Email:  javier.lopatin@kit.edu
-# @Last modified by:   javier
 # @Last modified time: 2018-11-29T16:26:48-08:00
 ##################################################################3
 
