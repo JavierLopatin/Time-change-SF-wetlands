@@ -18,7 +18,7 @@ force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier
 force-parameter-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE
 
 # run Level 2 processing. Parameters: parameter file, PCU cores, delay time (recommended 20 for S2)
-force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 1 20
+force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 2 20
 
 # problems finding "libgsl.so.19...so:
 # find libgsl.so.19 location
@@ -28,7 +28,7 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/javier/miniconda3/lib/
 export LD_LIBRARY_PATH
 
 # then try again:
-force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 1 20
+force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-skeleton.prm 2 20
 
 # revise the outputs to save space. Python routine to
 # delete folders (tiles) of Level2 that do not intersept

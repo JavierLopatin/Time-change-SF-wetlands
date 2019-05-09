@@ -7,7 +7,7 @@
 # @Last modified time: 2018-11-29T16:26:48-08:00
 ##################################################################3
 
-import os, argparse
+import argparse
 import pandas as pd
 
 file = '/home/javier/Documents/SF_delta/Sentinel/Level1-sentinel2-SF.pool'
