@@ -25,6 +25,8 @@ def export_dates(input, output):
         dates.append(a)
     # save as data frame
     dates = pd.DataFrame(dates, index=None)
+    dates.columns = ['dates']
+    dates = dates.sort_values(by=['dates'])
     # export
     dates.to_csv(output+'/FORCE_dates.txt', index=None, header=None)
 
