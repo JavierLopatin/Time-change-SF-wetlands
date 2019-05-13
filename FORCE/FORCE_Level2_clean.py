@@ -9,16 +9,16 @@
 import os
 import glob
 import shutil
+import ogr
+import gdal
+import argparse
 
 # load shapefile mask
-shape = '/home/javier/Documents/SF_delta/shp/delta_all_mask_diss_proj.shp'
+shape = '/home/javier/Documents/SF_delta/shp/delta_all_diss_proj.shp'
 
 def intersept_force(shape, image):
 
     # check if a raster and a shapefile intersept
-    import ogr
-    import gdal
-
     raster = gdal.Open(image)
     vector = ogr.Open(shape)
 
@@ -51,12 +51,22 @@ def intersept_force(shape, image):
 
     return(rasterGeometry.Intersect(vectorGeometry))
 
-# list of folders
-folders = [x[0] for x in os.walk('Level2')]
+if __name__ == "__main__":
 
-# loop through folders
-for file in folders[1:]:
-    # use one .tif file as example
-    raster = glob.glob(os.getcwd()+'/'+file+'/'+'*.tif')[0]
-    if not intersept_force(shape, raster):
-        shutil.rmtree(os.getcwd()+'/'+file)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i','--inputDir',
+      help='Input direction containing the folders with raster data', type=str)
+    args = vars(parser.parse_args())
+
+    # set variables
+    folderDir = args['inputDir']
+
+    # list of folders
+    folders = [x[0] for x in os.walk(folderDir)]
+
+    # loop through folders
+    for file in folders[1:]:
+        # use one .tif file as example
+        raster = glob.glob(file+'/'+'*.tif')[0]
+        if not intersept_force(shape, raster):
+            shutil.rmtree(file)

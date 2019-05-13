@@ -7,8 +7,12 @@ PATH=$PATH:$HOME/bin/
 # check if it worked:
 echo $PATH
 
-# Download S2 images
-force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.567/38.490,-121.864/38.277,-122.630/38.239,-122.558/37.882,-121.850/37.912,-121.498/37.680,-121.270/37.788,-121.240/37.984,-121.419/38.465,-121.567/38.490,-121.567/38.490 2015-01-01 2019-04-25 0 60
+# Download S2 images. Split into years to download more than one image at the time
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.50398/38.58572,-121.19662/37.61411,-121.31757/37.61132,-121.83876/37.96563,-121.89260/38.03941,-122.13005/38.03454,-122.13647/38.22692,-121.88685/38.22710,-121.84260/38.08930,-121.69349/38.16558,-121.85737/38.25658,-121.84376/38.38237,-121.64237/38.57481,-121.50398/38.58572 2015-01-01 2015-12-31 0 60
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.50398/38.58572,-121.19662/37.61411,-121.31757/37.61132,-121.83876/37.96563,-121.89260/38.03941,-122.13005/38.03454,-122.13647/38.22692,-121.88685/38.22710,-121.84260/38.08930,-121.69349/38.16558,-121.85737/38.25658,-121.84376/38.38237,-121.64237/38.57481,-121.50398/38.58572 2016-01-01 2016-12-25 0 60
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.50398/38.58572,-121.19662/37.61411,-121.31757/37.61132,-121.83876/37.96563,-121.89260/38.03941,-122.13005/38.03454,-122.13647/38.22692,-121.88685/38.22710,-121.84260/38.08930,-121.69349/38.16558,-121.85737/38.25658,-121.84376/38.38237,-121.64237/38.57481,-121.50398/38.58572 2017-01-01 2017-12-25 0 60
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.50398/38.58572,-121.19662/37.61411,-121.31757/37.61132,-121.83876/37.96563,-121.89260/38.03941,-122.13005/38.03454,-122.13647/38.22692,-121.88685/38.22710,-121.84260/38.08930,-121.69349/38.16558,-121.85737/38.25658,-121.84376/38.38237,-121.64237/38.57481,-121.50398/38.58572 2018-01-01 2018-12-25 0 60
+force-level1-sentinel2 /home/javier/Documents/SF_delta/Sentinel/raw /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/Level1-sentinel2-SF.pool -121.50398/38.58572,-121.19662/37.61411,-121.31757/37.61132,-121.83876/37.96563,-121.89260/38.03941,-122.13005/38.03454,-122.13647/38.22692,-121.88685/38.22710,-121.84260/38.08930,-121.69349/38.16558,-121.85737/38.25658,-121.84376/38.38237,-121.64237/38.57481,-121.50398/38.58572 2019-01-01 2019-12-25 0 60
 
 # Level 2 Processing System is intended to generate Analysis Ready Data (ARD),
 # i.e. harmonized, standardized and radiometrically consistent Level 2 products. This includes
@@ -33,7 +37,7 @@ force-level2 /home/javier/Documents/GitHub/Time-change-SF-wetlands/FORCE/level2-
 # revise the outputs to save space. Python routine to
 # delete folders (tiles) of Level2 that do not intersept
 # with the study area (polygon)
-python /home/javier/Documents/SF_delta/Sentinel/FORCE_Level2_clean.py
+python /home/javier/Documents/SF_delta/Sentinel/FORCE_Level2_clean.py -i /home/javier/Documents/SF_delta/Sentinel/Level2
 
 # get clear sky observations
 # get parameterfile
