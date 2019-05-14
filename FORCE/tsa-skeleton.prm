@@ -50,7 +50,7 @@ MONTH_MIN = 1
 MONTH_MAX = 12
 # Year range
 YEAR_MIN = 2015
-YEAR_MAX = 2018
+YEAR_MAX = 2019
 
 # TIME SERIES PARAMETERS
 # ------------------------------------------------------------------------
