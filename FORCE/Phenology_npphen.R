@@ -1,83 +1,93 @@
-###################################################
+################################################################################
 #
 # Phenology analysis with npphen
 #
-###################################################
+################################################################################
 
 # load packages
-if (!require("npphen")) { install.packages("npphen"); require("npphen") }
-if (!require("snow")) { install.packages("snow"); require("snow") }
-if (!require("raster")) { install.packages("raster"); require("raster") }
-if (!require("rts")) { install.packages("rts"); require("rts") }
+require("pipeR")
+require("dplyr")
+require("lubridate")
+require("raster")
+require("rts")
+require("npphen")
+require("snow")
+#require("greenbrown")
+
+# variables to st in the model
+n_jobs <- 8
 
 # work directory
-home <- '/home/javier/Documents/SF_delta/Sentinel'
+home <- "/home/javier/Documents/SF_delta/Sentinel/TSA"
 setwd(home)
 
-# load dates from Level2 data
-dates <- read.table('FORCE_dates.txt', header=F)
-dates <- as.Date(dates$V1, format = "%Y/%m/%d")
-dates <- dates[order(dates)]
-length(dates)
+
+getPhen <- function(name, dates, n_jobs){
+  # ============================================================================
+  # Phenological analysis of the raster time series.
+  #
+  # n_jobs = number of parallel jobs
+  # h      = 1 (Northern Hemisphere); 2 (Southers Hemisphere)
+  # nGS    = Number of greenness values within a single growing season
+  # rge    = minimum and maximum values of the response variable
+  # refp   = Numeric vector with the correlative number of dates to be used as
+  #          reference period.
+  # anop   = Numerical vector with dates that the anomalies have to be detected
+  # ============================================================================
+
+  # npphen parameters
+  outname_phen <- paste0(basename1, "_phen.tif")
+  outname_anomal <- paste0(basename1, "_anoma.tif")
+
+  # load raster and transform to raster time series class
+  raster <- stack(name)
+
+  # map the phenological curve
+  PhenMap(s=raster, nGS=46, dates=dates, h=1, nCluster=n_jobs,
+    outname=outname_phen, format="GTiff", datatype="INT2S", rge=c(0,10000))
+  # map phenological anomalies
+  PhenAnoMap(s=raster, dates=dates, h=1, nCluster=n_jobs, refp=c(0,length(dates)),
+    anop=c(0,length(dates)), outname=outname_anomal, format="GTiff", datatype="INT2S",
+    rge=c(0,10000))
+
+}
+
+# example to develop
+i = 12
 
 # list folders in TSA
-folders <- list.files(path='TSA', pattern='X')
+folders <- list.files(path = ".", pattern = "X")
 # get list of TSS files
 
-i = 11
+######## LOOP aca
 
-files <- list.files( file.path(home, 'TSA', folders[i]))
-tss <- grep('TSS.tif',  files)
-tss <- file.path(home, 'TSA', folders[i], files[tss])
-if ( !length(grep('.aux',  tss)) == 0 ){
-  tss <- tss[- grep('.tif.aux',  tss)]
-}
-name <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(tss))
-# load raster
-raster <- stack(tss)
-# assing na values
-#values(raster)[values(raster) == -32767] = NA
-# Generate a Raster time series using a raster stack and a date database from Aysen
-#ts <- rts(raster, dates)
-#rm(raster)
+setwd(file.path(home, folders[i]))
 
-# npphen parameters
-outname_phen <- file.path(home, 'TSA', folders[i], paste0(name, '_phen.tif'))
-outname_anomal <- file.path(home, 'TSA', folders[i], paste0(name, '_anomal.tif'))
-# number of parallel jobs
-n_jobs <- 4
-# 1 = Northern Hemisphere; 2 = Southers Hemisphere
- h <- 1
-# Number of greenness values within a single growing season
-nGS <- 23
-# minimum and maximum values of the response variable
-rge <- c(0,10000)
-# Numeric vector with the correlative number of dates to be used as reference period.
-# For example, refp=c(1:393) for MODIS Vegetation Index 16-days composites (18/02/2000 – 06/06/2017)
-refp <- c(0,length(dates))
-# Numeric vector with the correlative number of dates for the period in which the
-# anomalies will be calculated. For example refp=c(21:43) for the first complete
-# year for MODIS Vegetation Index 16-days composites (01/01/2001 – 19/12/2001).
-# anop y refp can be overlapped
-anop <- c(0,length(dates))
-
-# map the phenological curve
-PhenMap(s=raster, dates=dates, h=h, nGS=nGS, nCluster=n_jobs,
-  outname=outname_phen, format="GTiff", datatype="FLT4S", rge=rge)
-# map anomalies outside the curve
-PhenAnoMap(s=raster, dates=dates, h=h, refp=refp, anop=anop,
-  nCluster=n_jobs, outname=outname_anomal, format="GTiff", datatype="FLT4S", rge=rge)
-
-
-# Test parameters on one pixel
-sl_pixel <- cellFromXY(raster, c(582014., 4222770))
-sl_pixelts <- extract(rts(raster, dates), sl_pixel)
-plot(sl_pixelts)
-
-Phen(x=as.vector(sl_pixelts), dates=dates, h=h, nGS=nGS, rge=rge)
-
-PhenAnoma(x=as.vector(sl_pixelts), dates=dates, h=h, refp=refp,
-  anop=anop, rge=rge)
-
-PhenKplot(x=as.vector(sl_pixelts), dates=dates, h=h, nGS=nGS, xlab="DOY",
-  ylab="EVI", rge=rge)
+# create pipelilne (pipeR package)
+folders[i] %>>%
+  (list.files(file.path(home, .))) %>>%
+  (~ list) %>>% # save list as 'list'
+  (grep("TSS.tif", .)) %>>%
+  (file.path(home, folders[i], list[.])) %>>%
+  # delete .tif.aux files if there are
+  #(if (!length(grep(".aux", .)) == 0) .[-grep(".tif.aux", .)]) %>>%
+  (~ name) %>>%
+  sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(.)) %>>%
+  (~ basename1) %>>%
+  ### get dates from .hdr file
+  paste0('.hdr') %>>%
+  # open file and read only Line 21
+  file(open = "r")  %>>%
+  (~ read) %>>%
+  readLines %>>%
+  (.[21]) %>>%
+  # remove '}' character from string
+  (gsub("}", "", .)) %>>%
+  # text comma separated to vector
+  # text comma separated to vector
+  (as.numeric(unlist(strsplit(., split = ", ")))) %>>%
+  # decimal years to normal dates
+  (format(date_decimal(.), "%Y/%m/%d")) %>>%
+  as.Date(format = "%Y/%m/%d") %>>%
+  (~ dates) %>>%
+  (getPhen(name, ., n_jobs))
