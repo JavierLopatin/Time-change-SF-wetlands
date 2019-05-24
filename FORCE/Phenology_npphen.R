@@ -52,42 +52,45 @@ getPhen <- function(name, dates, n_jobs){
 
 }
 
-# example to develop
-i = 12
-
 # list folders in TSA
 folders <- list.files(path = ".", pattern = "X")
 # get list of TSS files
 
 ######## LOOP aca
+for (i in 1:length(folders)){
 
-setwd(file.path(home, folders[i]))
+  print(paste0('processing', ' ', folders[i], ' = ',
+        round((i/length(folders))*100, 0), ' %'))
 
-# create pipelilne (pipeR package)
-folders[i] %>>%
-  (list.files(file.path(home, .))) %>>%
-  (~ list) %>>% # save list as 'list'
-  (grep("TSS.tif", .)) %>>%
-  (file.path(home, folders[i], list[.])) %>>%
-  # delete .tif.aux files if there are
-  #(if (!length(grep(".aux", .)) == 0) .[-grep(".tif.aux", .)]) %>>%
-  (~ name) %>>%
-  sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(.)) %>>%
-  (~ basename1) %>>%
-  ### get dates from .hdr file
-  paste0('.hdr') %>>%
-  # open file and read only Line 21
-  file(open = "r")  %>>%
-  (~ read) %>>%
-  readLines %>>%
-  (.[21]) %>>%
-  # remove '}' character from string
-  (gsub("}", "", .)) %>>%
-  # text comma separated to vector
-  # text comma separated to vector
-  (as.numeric(unlist(strsplit(., split = ", ")))) %>>%
-  # decimal years to normal dates
-  (format(date_decimal(.), "%Y/%m/%d")) %>>%
-  as.Date(format = "%Y/%m/%d") %>>%
-  (~ dates) %>>%
-  (getPhen(name, ., n_jobs))
+  setwd(file.path(home, folders[i]))
+
+  # create pipelilne (pipeR package)
+  folders[i] %>>%
+    (list.files(file.path(home, .))) %>>%
+    (~ list) %>>% # save list as 'list'
+    (grep("TSS.tif", .)) %>>%
+    (file.path(home, folders[i], list[.])) %>>%
+    # delete .tif.aux files if there are
+    #(if (!length(grep(".aux", .)) == 0) .[-grep(".tif.aux", .)]) %>>%
+    (~ name) %>>%
+    sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(.)) %>>%
+    (~ basename1) %>>%
+    ### get dates from .hdr file
+    paste0('.hdr') %>>%
+    # open file and read only Line 21
+    file(open = "r")  %>>%
+    (~ read) %>>%
+    readLines %>>%
+    (.[21]) %>>%
+    # remove '}' character from string
+    (gsub("}", "", .)) %>>%
+    # text comma separated to vector
+    # text comma separated to vector
+    (as.numeric(unlist(strsplit(., split = ", ")))) %>>%
+    # decimal years to normal dates
+    (format(date_decimal(.), "%Y/%m/%d")) %>>%
+    as.Date(format = "%Y/%m/%d") %>>%
+    (~ dates) %>>%
+    # process pehnology analysis
+    (getPhen(name, ., n_jobs))
+}
